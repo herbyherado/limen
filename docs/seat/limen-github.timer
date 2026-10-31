@@ -3,6 +3,7 @@ Description=Poll GitHub App comments for Limen
 
 [Timer]
 OnBootSec=1min
+OnActiveSec=1min
 OnUnitInactiveSec=1min
 Persistent=true
 Unit=limen-github.service
