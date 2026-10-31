@@ -14,8 +14,8 @@ test("a pi-claude route loads Pi's installed bridge package; OMP gets it as one 
 	const bridge = `${home}/.pi/agent/npm/node_modules/@fixture/pi-claude-bridge`;
 	await mkdir(bridge, { recursive: true });
 	const slots = { jsonMode: true, jobDir: "/j", label: "l", preamble: "p", extensions: [], taskFile: "/j/task.md" };
-	const pi = argvFor(ENGINES.pi, { ...slots, provider: "pi-claude", model: "claude-opus-5-5" }).join(" ");
-	assert.ok(pi.includes(`--extension ${bridge} --provider pi-claude --model claude-opus-5-5 `), pi);
+	const pi = (provider: string) => argvFor(ENGINES.pi, { ...slots, provider, model: "claude-opus-5-5" }).join(" ");
+	assert.ok(["pi-claude", "claude-bridge"].every((id) => pi(id).includes(`--extension ${bridge} --provider ${id} `)));
 	const long = argvFor(ENGINES.omp, { ...slots, model: "pi-claude/claude-opus-5-5" });
 	assert.deepEqual(argvFor(ENGINES.omp, { ...slots, provider: "pi-claude", model: "claude-opus-5-5" }), long);
 	assert.deepEqual(argvFor(ENGINES.omp, { ...slots, provider: "pi-claude", model: "pi-claude/claude-opus-5-5" }), long);
